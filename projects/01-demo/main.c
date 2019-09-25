@@ -21,6 +21,7 @@
 /* Define ------------------------------------------------------------*/
 #define true        1
 #define LED_PIN     PB5
+#define SECOND_PIN  PB4
 #define BLINK_DELAY 250
 
 /* Variables ---------------------------------------------------------*/
@@ -36,7 +37,7 @@ int main(void)
 {
     /* Set output pin */
     DDRB |= _BV(LED_PIN);           /* DDRB = DDRB or (0010 0000) */
-    DDRB |= _BV(PB4);
+    DDRB |= _BV(SECOND_PIN);
 
     /* Turn LED off */
     PORTB &= ~_BV(LED_PIN);         /* PORTB = PORTB and (not (0010 0000)) */
@@ -46,8 +47,8 @@ int main(void)
     {
         /* Invert LED and delay */
         PORTB ^= _BV(LED_PIN);      /* PORTB = PORTB xor (0010 0000) */
-        if(PORTB>>5==1){
-          PORTB ^= _BV(PB4);
+        if(PORTB>>LED_PIN==1){
+          PORTB ^= _BV(SECOND_PIN);
         }
         _delay_ms(BLINK_DELAY);     /* Wait for several milisecs */
     }

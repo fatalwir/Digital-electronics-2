@@ -12,12 +12,16 @@
 #include <util/delay.h>
 #include <stdbool.h>
 
+/* Macro defines -----------------------------------------------------*/
+#define set_bit(aPORT, aPIN)   aPORT |= _BV(aPIN)
+#define clear_bit(aPORT, aPIN)   aPORT &= ~_BV(aPIN)
+
 /* Typedef -----------------------------------------------------------*/
 /* Define ------------------------------------------------------------*/
 #define LED_PIN_1       PB5
 #define LED_PIN_2       PB0
 #define BTN_PIN         PB1
-#define DEBOUNCE_DELAY  50
+#define DEBOUNCE_DELAY  100
 
 /* Variables ---------------------------------------------------------*/
 
@@ -27,11 +31,15 @@ void swapLeds();
 /* Functions ---------------------------------------------------------*/
 int main(void)
 {
-    DDRB |= _BV(LED_PIN_1);
-    DDRB |= _BV(LED_PIN_2);
-    DDRB &= ~_BV(BTN_PIN);
-    PORTB |= _BV(BTN_PIN);
-    PORTB &= ~_BV(LED_PIN_1);
+//  DDRB |= _BV(LED_PIN_1);   //First LED pin set as output
+    set_bit(DDRB, LED_PIN_1);
+//  DDRB |= _BV(LED_PIN_2);   //Second LED pin set as output
+    set_bit(DDRB, LED_PIN_2);
+
+//  DDRB &= ~_BV(BTN_PIN);    //Button pin set as input
+    clear_bit(DDRB, BTN_PIN);
+//  PORTB |= _BV(BTN_PIN);    //Activate button pin pull-up 
+    set_bit(PORTB, BTN_PIN);
 
     while (true)
     {

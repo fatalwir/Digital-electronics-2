@@ -13,8 +13,8 @@
 #include <stdbool.h>
 
 /* Macro defines -----------------------------------------------------*/
-#define set_bit(aPORT, aPIN)   aPORT |= _BV(aPIN)
-#define clear_bit(aPORT, aPIN)   aPORT &= ~_BV(aPIN)
+#define set_bit(aPORT, aPIN)      aPORT |= _BV(aPIN)
+#define clear_bit(aPORT, aPIN)    aPORT &= ~_BV(aPIN)
 
 /* Typedef -----------------------------------------------------------*/
 /* Define ------------------------------------------------------------*/

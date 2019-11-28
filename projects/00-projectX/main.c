@@ -11,7 +11,8 @@
  **********************************************************************/
 
 /* Includes ----------------------------------------------------------*/
-#include <stdlib.h>         // itoa() function
+#include <stdio.h>   
+#include <stdlib.h>      // itoa() function
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "timer.h"
@@ -22,8 +23,8 @@
 
 /* Typedef -----------------------------------------------------------*/
 /* Define ------------------------------------------------------------*/
-#define UART_BAUD_RATE 76800
-#define NO_MEAS_MODE 0
+#define UART_BAUD_RATE 115200
+#define NO_MEAS_MODE  0
 #define U_MEAS_MODE  1
 #define I_MEAS_MODE  2
 
@@ -33,22 +34,42 @@ uint16_t uval = 0;
 uint16_t ival = 0;
 uint8_t  cnt = 0;
 uint8_t  a = 0;
-uint8_t  power = 0;
+//uint8_t i = 24;
 
 char string[17];
 
+char array[3];
+
+// uint8_t first = 2;
+// uint8_t uval_l = 0;
+// uint16_t uval_h = 400;
+// uint8_t ival_l = 6;
+// uint16_t ival_h = 824;
+
+char uart_string[24];
+
 /* Function prototypes -----------------------------------------------*/
 void startConversion(uint8_t pin);
-void writeData(void);
+void sendLCD(void);
+void sendUART(char array);
 /* Functions ---------------------------------------------------------*/
 /* Main --------------------------------------------------------------*/
 /* Read ADC result and transmit via UART. */
 int main(void)
 {
-    // Internal 1,1 V ADC reference selection
-    ADMUX |= _BV(REFS0);//|_BV(REFS1);
+    /* External 5 V ADC reference selection
+    ADMUX |= _BV(REFS0);
     ADMUX &= ~(_BV(REFS1));
-    //ADMUX |= _BV(REFS0)|_BV(REFS1);
+    */
+
+    // first = 2;
+    // uval_h = 400;
+    // ival_h = 830;
+    // uval_l = 0;
+    // ival_l = 6;
+
+    // Internal 1,1 V ADC reference selection
+    ADMUX |= _BV(REFS0)|_BV(REFS1);
     // Enabling ADC, interrupt, select prescaling by 128 (f=125kHz)
     ADCSRA |= _BV(ADEN)|_BV(ADPS2)|_BV(ADPS1)|_BV(ADPS0)|_BV(ADIE);
 
@@ -86,9 +107,14 @@ int main(void)
     // _delay_ms(2000);
     // lcd_clrscr();
     
-    uart_puts("UART testing\r\n");
 
     //Timers
+    /* Timer0
+     * TODO: Timer0 clock source and enable overflow 
+     *       interrupt */
+    // TIM_config_prescaler(TIM0, TIM_PRESC_256);
+    // TIM_config_interrupt(TIM0, TIM_OVERFLOW_ENABLE);
+
     /* Timer1
      * TODO: Timer1 clock source and enable overflow 
      *       interrupt */
@@ -103,15 +129,17 @@ int main(void)
 
     // UART: asynchronous, 8-bit data, no parity, 1-bit stop
     uart_init(UART_BAUD_SELECT(UART_BAUD_RATE, F_CPU));
+    
+    uart_puts("UART testing\r\n");
 
+    
     // Enables interrupts by setting the global interrupt mask
     sei();
 
     // Infinite loop
     for (;;) {
     }
-
-    // Will never reach this
+    // Will never reach thisccept instructions
     return (0);
 }
 
@@ -119,12 +147,18 @@ int main(void)
 /* Timer1 overflow interrupt routine.
  * Start LCD write and UART transmitting. */
 
+// ISR(TIMER0_OVF_vect)
+// {
+//     if (measuring == NO_MEAS_MODE) {
+//     //     cnt = 0;
+//         sendUART();
+//     }
+// }
+
 ISR(TIMER1_OVF_vect)
 {
-    writeData();
-    // if (measuring == NO_MEAS_MODE){
-    //     writeData();
-    // }
+    sendLCD();
+    //sendUART();
 }
 
 /* Timer2 overflow interrupt routine.
@@ -165,6 +199,18 @@ ISR(ADC_vect)
                 cnt = 0;
             }
             break;
+        case NO_MEAS_MODE:
+            // array[0] = uval*128;
+            // lcd_gotoxy(0,1);
+            // lcd_putc(array[0]);
+            // array[1] = uval%128;
+            // lcd_gotoxy(5,1);
+            // lcd_putc(array[1]);
+            // array[2] = ival%128;
+            // lcd_gotoxy(10,1);
+            // lcd_putc(array[2]);
+            //sendUART(array[0]);
+            break;
         default:
             break;
     }
@@ -189,20 +235,48 @@ void startConversion(uint8_t mode) {
     ADCSRA |= _BV(ADSC);    // Start conversion
 }
 
-void writeData(void) {
+void sendLCD(void) {
     lcd_clrscr();
     itoa(uval, string, 10);
     lcd_gotoxy(0, 0);
     lcd_puts("U=");
-    //lcd_gotoxy(2, 0);
     lcd_puts(string);
     lcd_puts("V;");
-    //uart_puts("Test U");
     itoa(ival, string, 10);
     lcd_gotoxy(10, 0);
     lcd_puts("I=");
     lcd_puts(string);
     lcd_puts("A");
-    //uart_puts("Test I");
+
+
+    array[0] = 2&uval/128&ival/128; //Zaměnit s něčím použitelným!!!
+    lcd_gotoxy(0,1);
+    lcd_putc(array[0]);
+    array[1] = uval%128;
+    lcd_gotoxy(5,1);
+    lcd_putc(array[1]);
+    array[2] = ival%128;
+    lcd_gotoxy(10,1);
+    lcd_putc(array[2]);
     return;
 }
+
+void sendUART(char array) {
+    uart_putc(array);
+    // uart_putc(array[0]);
+    // uart_putc(array[1]);
+    // uart_putc(array[2]);
+    return;
+}
+
+// for (i; i<3; i++) {
+    //     if (uart_string[i] == '\0') {
+    //         uart_string[i] = ' ';
+    //     }
+    // }
+
+    // itoa(first, uart_string, 16);
+    // itoa(uval_l, &uart_string[1], 16);
+    // itoa(ival_l, &uart_string[2], 16);
+    // itoa(uval_h, &uart_string[3], 16);
+    // itoa(ival_h, &uart_string[4], 16);

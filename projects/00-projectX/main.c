@@ -23,7 +23,7 @@
 
 /* Typedef -----------------------------------------------------------*/
 /* Define ------------------------------------------------------------*/
-#define UART_BAUD_RATE 115200
+#define UART_BAUD_RATE 76800 //115200
 #define NO_MEAS_MODE  0
 #define U_MEAS_MODE  1
 #define I_MEAS_MODE  2
@@ -248,16 +248,22 @@ void sendLCD(void) {
     lcd_puts(string);
     lcd_puts("A");
 
-
-    array[0] = 2&uval/128&ival/128; //Zaměnit s něčím použitelným!!!
-    lcd_gotoxy(0,1);
-    lcd_putc(array[0]);
     array[1] = uval%128;
-    lcd_gotoxy(5,1);
-    lcd_putc(array[1]);
     array[2] = ival%128;
-    lcd_gotoxy(10,1);
-    lcd_putc(array[2]);
+    array[0] = 0;
+    array[0] = 1<<7 | (uval>>7)<<3 | ival>>7;
+
+    //lcd_gotoxy(0,1);
+    //lcd_putc(array[0]);
+    //array[1] = uval%128;
+    //lcd_gotoxy(5,1);
+    //lcd_putc(array[1]);
+    //array[2] = ival%128;
+    //lcd_gotoxy(10,1);
+    //lcd_putc(array[2]);
+    uart_putc(array[0]);
+    uart_putc(array[1]);
+    uart_putc(array[2]);
     return;
 }
 

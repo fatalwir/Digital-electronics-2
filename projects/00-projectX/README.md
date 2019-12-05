@@ -43,7 +43,7 @@ So these bytes are sent like this: ```0b10uuuiii```, ```0b0uuuuuuu```, ```0b0iii
 #### PC -> Arduino
 First byte is a control one. Again, the MSB=1 for easy distinguishing that it's the control byte. It also contains information wether the LCD should be cleared or not and where a cursor should be placed.  
   
-0b1cyyxxxx
+```0b1cyyxxxx```
   - c - Clear LCD bit (1 - clear LCD before putting new characters)
   - yy - Row in which the cursor should be placed
   - xxxx - Column in which the cursor should be placed

@@ -39,7 +39,6 @@ public class LcdSender extends Thread {
     public void run() {
         while (!stop) {
             MeasuredSample sample = DataProcessor.getSample();
-            sample = new MeasuredSample(1, 10, 2);
             if (sample != null) {
                 double v = sample.getVoltage();
                 double c = sample.getCurrent();

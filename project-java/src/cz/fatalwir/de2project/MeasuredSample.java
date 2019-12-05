@@ -44,13 +44,13 @@ public class MeasuredSample {
     
     public MeasuredSample(double refConst, int v, int c) {
         this.refConstant = refConst;
-        this.voltage = v/refConstant;
+        this.voltage = (v/refConstant)*10;
         this.current = c/refConstant;
         this.averagedCount = 1;
     }
 
     public void addToAverage(int v, int c) {
-        voltage+= v/refConstant;
+        voltage+= (v/refConstant)*10;
         current+= c/refConstant;
         averagedCount++;
     }

@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Ondrej/Dokumenty/NetBeansProjects/DE2Project/src/cz/fatalwir/de2project/DataProcessor.java</file>
             <file>file:/D:/Ondrej/Dokumenty/NetBeansProjects/DE2Project/src/cz/fatalwir/de2project/Main.java</file>
             <file>file:/D:/Ondrej/Dokumenty/NetBeansProjects/DE2Project/src/cz/fatalwir/de2project/Frame.java</file>
-            <file>file:/D:/Ondrej/Dokumenty/NetBeansProjects/DE2Project/src/cz/fatalwir/de2project/ProcessClass.java</file>
+            <file>file:/D:/Ondrej/Dokumenty/NetBeansProjects/DE2Project/src/cz/fatalwir/de2project/MeasuredSample.java</file>
+            <file>file:/D:/Ondrej/Dokumenty/NetBeansProjects/DE2Project/src/cz/fatalwir/de2project/SerialCommunicator.java</file>
         </group>
     </open-files>
 </project-private>

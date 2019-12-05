@@ -39,6 +39,7 @@ import java.util.Date;
 public class DataProcessor {
     
     private static MeasuredSample sample;
+    private static MeasuredSample lastSample;
     private static int avgCount = 0;
     private static double refConst = 1;
     
@@ -56,6 +57,7 @@ public class DataProcessor {
             sample.addToAverage(v, c);
             if(avgCount >= sample.getAveragedCount()) {
                 propagateValues();
+                lastSample = sample;
                 sample = null;
             }
         }
@@ -117,8 +119,8 @@ public class DataProcessor {
         logFile = null;
     }
     
-    public static MeasuredSample getSample() {
-        return sample;
+    public static MeasuredSample getLastSample() {
+        return lastSample;
     }
     
 }

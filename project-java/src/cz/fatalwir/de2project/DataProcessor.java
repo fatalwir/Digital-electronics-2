@@ -33,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static cz.fatalwir.de2project.Main.f;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -49,14 +50,14 @@ public class DataProcessor {
     public static void processValues(int v, int c) {
         if(sample == null) {
             sample = new MeasuredSample(refConst, v, c);
-            if(avgCount >= sample.getAveragedCount()) {
+            if(avgCount <= sample.getAveragedCount()) {
                 propagateValues();
                 lastSample = sample;
                 sample = null;
             }
         } else {
             sample.addToAverage(v, c);
-            if(avgCount >= sample.getAveragedCount()) {
+            if(avgCount <= sample.getAveragedCount()) {
                 propagateValues();
                 lastSample = sample;
                 sample = null;
@@ -77,6 +78,12 @@ public class DataProcessor {
         Date date = new Date();
         String d = formatterPc.format(date);
         f.setTimeLabelText(d);
+        
+        if (f.isLoggingChecked()) {
+            if (logFile.canWrite()) {
+                logToFile(v, c, p, d);
+            }
+        }
     }
 
     public static void setAvgCount(int n) {
@@ -90,10 +97,11 @@ public class DataProcessor {
     public static boolean openFile() {
         logFile = new File("log.csv");
         try {
-            if (logFile.createNewFile()) {
+            if (!logFile.exists()) {
+                logFile.createNewFile();
                 // New file created so have to make CSV header
                 try {
-                    logFileWriter = new PrintWriter(logFile);
+                    logFileWriter = new PrintWriter(new FileWriter(logFile, true));
                     logFileWriter.append("\"Voltage [V]\";\"Current [A]\";\"Power [W]\";\"DateTimeStamp\"\r\n");
                 } catch (FileNotFoundException ex) {
                     logFile = null;
@@ -101,7 +109,7 @@ public class DataProcessor {
                 }
             } else {
                 try {
-                    logFileWriter = new PrintWriter(logFile);
+                    logFileWriter = new PrintWriter(new FileWriter(logFile, true));
                 } catch (FileNotFoundException ex) {
                     logFile = null;
                     return false;
@@ -118,6 +126,10 @@ public class DataProcessor {
         logFileWriter.close();
         logFileWriter = null;
         logFile = null;
+    }
+    
+    private static void logToFile(double v, double c, double p, String dts) {
+        logFileWriter.append(String.valueOf(v)+";"+String.valueOf(c)+";"+String.valueOf(p)+";"+dts+"\r\n");
     }
     
     public static MeasuredSample getLastSample() {

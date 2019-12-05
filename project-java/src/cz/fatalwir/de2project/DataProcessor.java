@@ -51,6 +51,7 @@ public class DataProcessor {
             sample = new MeasuredSample(refConst, v, c);
             if(avgCount >= sample.getAveragedCount()) {
                 propagateValues();
+                lastSample = sample;
                 sample = null;
             }
         } else {

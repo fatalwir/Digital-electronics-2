@@ -45,12 +45,12 @@ public class LcdSender extends Thread {
                 double p = sample.getPower();
 
                 SimpleDateFormat formatterLcd = new SimpleDateFormat("HH:mm:ss");
-                SerialCommunicator.sendTextToLCD(0, 0, true,
-                        String.format("U=%.1fV", v));
+                SerialCommunicator.sendTextToLCD(0, 0, false,
+                        String.format("U=%.1fV  ", v));
                 SerialCommunicator.sendTextToLCD(8, 0, false,
-                        String.format("I=%.2fA", c));
+                        String.format("I=%.2fA ", c));
                 SerialCommunicator.sendTextToLCD(0, 1, false,
-                        String.format("P=%.1fW %s", p, formatterLcd.format(new Date())));
+                        String.format("P=%.1fW %s ", p, formatterLcd.format(new Date())));
             }
             try {
                 Thread.sleep(1000);

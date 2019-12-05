@@ -71,15 +71,9 @@ public class DataProcessor {
         f.setPower(p);
 
         SimpleDateFormat formatterPc = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
-        SimpleDateFormat formatterLcd = new SimpleDateFormat("HH:mm:ss");
         Date date = new Date();
         String d = formatterPc.format(date);
         f.setTimeLabelText(d);
-        
-        SerialCommunicator.sendTextToLCD(0, 0, true,
-                String.format("U=%.1fV I=%.2fA", v, c));
-        SerialCommunicator.sendTextToLCD(0, 0, false,
-                String.format("P=%.1fW %s", p, formatterLcd.format(date)));
     }
 
     public static void setAvgCount(int n) {
@@ -121,6 +115,10 @@ public class DataProcessor {
         logFileWriter.close();
         logFileWriter = null;
         logFile = null;
+    }
+    
+    public static MeasuredSample getSample() {
+        return sample;
     }
     
 }

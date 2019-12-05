@@ -38,6 +38,8 @@ public class SerialCommunicator {
     private static int byteCounter = 0;
     private static int vBuffer = 0;
     private static int cBuffer = 0;
+    
+    private static LcdSender lcdSender;
 
     // Method for connecting to the serial port
     public static boolean connectPort(String name, int baud) {
@@ -66,6 +68,8 @@ public class SerialCommunicator {
                     }
                 }
             });
+            lcdSender = new LcdSender();
+            lcdSender.start();
         } else {
             return false;
         }
@@ -75,6 +79,8 @@ public class SerialCommunicator {
 
     // Method for disconnecting the serial port
     public static boolean disconnectPort() {
+        lcdSender.stop = true;
+        lcdSender = null;
         return port.closePort();
     }
 

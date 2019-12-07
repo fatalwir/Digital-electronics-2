@@ -96,7 +96,7 @@ public class SerialCommunicator {
             for (byte b : buffer) {
                 port.writeBytes(new byte[]{b}, 1);
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(5);
                 } catch (Exception e) {
                 }
             }

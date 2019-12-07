@@ -92,7 +92,14 @@ public class SerialCommunicator {
             buffer[0] = (byte) (128 + ((clr ? 1 : 0) * 64) + 16 * y + x);
             System.arraycopy(s.getBytes(Charset.forName("US-ASCII")), 0, buffer, 1, s.length());
             buffer[s.length() + 1] = (byte) 0;
-            port.writeBytes(buffer, buffer.length);
+            //port.writeBytes(buffer, buffer.length);
+            for (byte b : buffer) {
+                port.writeBytes(new byte[]{b}, 1);
+                try {
+                    Thread.sleep(1);
+                } catch (Exception e) {
+                }
+            }
             return true;
         } else {
             return false;

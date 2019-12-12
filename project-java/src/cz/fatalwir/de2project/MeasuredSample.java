@@ -64,7 +64,7 @@ public class MeasuredSample {
     }
     
     public double getPower() {
-        return voltage*current/averagedCount;
+        return voltage*current/(averagedCount*averagedCount);
     }
     
     public int getAveragedCount() {

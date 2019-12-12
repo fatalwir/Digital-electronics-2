@@ -50,7 +50,9 @@ public class LcdSender extends Thread {
                 SerialCommunicator.sendTextToLCD(8, 0, false,
                         String.format("I=%.2fA ", c));
                 SerialCommunicator.sendTextToLCD(0, 1, false,
-                        String.format("P=%.1fW %s ", p, formatterLcd.format(new Date())));
+                        String.format("P=%.1fW ", p));
+                SerialCommunicator.sendTextToLCD(8, 1, false,
+                        String.format("%s", formatterLcd.format(new Date())));
             }
             try {
                 Thread.sleep(1000);

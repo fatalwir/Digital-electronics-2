@@ -9,3 +9,7 @@ Raw data received from Arduino via UART are processed (Volts calculated from raw
   - Avg. fact. - number of samples fora averaging before displaying them
   - Ref. const. - a constant for recalculation raw data, calculation formula located in [AVR code description](/Digital-electronics-2/projects/00-projectX)
   - Log to CSV - the application logs data to log.csv file in actual folder (from which the program was started) when checked
+
+### Development notes
+  - The application was written using [NetBeans IDE](https://netbeans.org/)
+  - The application uses and includes all necessary library files of [Fazecast's jSerialComm library](https://fazecast.github.io/jSerialComm/) packed in the compilled file.

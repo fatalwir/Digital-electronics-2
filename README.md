@@ -6,7 +6,8 @@
   - Team
     - Ondřej Kolář
     - Vojtěch Herbrych
-  - Presentation: [project_presentation.pdf](presentation/project_presentation.pdf)  
+  - Presentation: [project_presentation.pdf](presentation/project_presentation.pdf)
+    - Showcase video: [https://www.youtube.com/watch?v=5RztR6j0-bU](https://www.youtube.com/watch?v=5RztR6j0-bU)
     
   - Detailed AVR program description in [project folder](projects/00-projectX)
   - Detailed Java application description located in [Digital-electronics-2](.)/[project-java](project-java)/  
